@@ -1,7 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QLabel>
+#include <QPushbutton>
 #include <QMainWindow>
+#include <QTimer>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,5 +23,15 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QLabel *time_label;
+    QPushButton *start_button;
+    QTimer *timer;
+
+    int seconds_remaining;
+    bool running;
+
+private slots:
+    void onTimerTick();
+    void onStartPause();
 };
 #endif // MAINWINDOW_H
