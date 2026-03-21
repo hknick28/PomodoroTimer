@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     MainWindow::time_label = new QLabel("25:00");
     MainWindow::start_button = new QPushButton("Start");
+    MainWindow::reset_button = new QPushButton("Reset");
     MainWindow::seconds_remaining = 25 * TIME_CONSTANT;
     MainWindow::running = false;
     MainWindow::current_phase = Phase::Work;
@@ -23,8 +24,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(timer, &QTimer::timeout, this, &MainWindow::onTimerTick);
     connect(start_button, &QPushButton::pressed, this, &MainWindow::onStartPause);
+    connect(reset_button, &QPushButton::pressed, this, &MainWindow::reset);
 
-    this -> setCentralWidget(initUi(start_button, time_label));
+
+    this -> setCentralWidget(initUi(start_button, time_label, reset_button));
 }
 
 MainWindow::~MainWindow()
@@ -52,25 +55,29 @@ void MainWindow::onTimerTick()
  * */
 void MainWindow::onStartPause()
 {
-    if(running)
-    {
-        running=false;
-        start_button->setText("Start");
-        timer->stop();
-    }
-    else
-    {
-        running=true;
-        start_button->setText("Pause");
-        timer->start(1000);
-    }
+    if(running){ setupStart(); }
+    else{ setupPause(); }
+}
+
+void MainWindow::setupStart()
+{
+    running=false;
+    start_button->setText("Start");
+    timer->stop();
+}
+
+void MainWindow::setupPause()
+{
+    running=true;
+    start_button->setText("Pause");
+    timer->start(1000);
 }
 
 /*
  * Create Layout for the gui
  * Adding the start button
  * */
-QWidget* MainWindow::initUi(QPushButton* start, QLabel* timer_label)
+QWidget* MainWindow::initUi(QPushButton* start, QLabel* timer_label, QPushButton* reset)
 {
     QWidget *central_widget = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(central_widget);
@@ -79,6 +86,7 @@ QWidget* MainWindow::initUi(QPushButton* start, QLabel* timer_label)
 
     layout->addWidget(timer_label);
     layout->addWidget(start);
+    layout->addWidget(reset);
 
     return central_widget;
 }
@@ -132,13 +140,40 @@ void MainWindow::setTimerLabel()
     int secs;
     int mins;
 
+    QString mins_str;
+    QString secs_str;
+
+
     secs = seconds_remaining % TIME_CONSTANT;
     mins = seconds_remaining / TIME_CONSTANT;
 
-    time_label->setText(QString::number(mins)+":"+QString::number(secs));
+    mins_str = QString::number(mins);
+
+    //Add padding if neccecary
+    if(mins < 10){ mins_str = QString::number(mins); }
+    else{ mins_str = + "0" + QString::number(mins); }
+
+
+    if(secs < 10){ secs_str = QString::number(secs); }
+    else{ secs_str = QString::number(secs) + "0"; }
+
+
+    time_label->setText(mins_str+":"+secs_str);
 }
 
 int MainWindow::minsToSecs(int mins)
 {
     return mins*TIME_CONSTANT;
+}
+
+/*
+ * Reset timer back to working phase
+ * */
+void MainWindow::reset()
+{
+    current_phase = Phase::Work;
+    seconds_remaining = work_duration;
+    work_phase_counter = 0;
+    setupStart();
+    setTimerLabel();
 }

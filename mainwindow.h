@@ -5,7 +5,7 @@
 #include <QPushbutton>
 #include <QMainWindow>
 #include <QTimer>
-
+#include <QWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,7 +27,9 @@ private:
     Ui::MainWindow *ui;
     QLabel *time_label;
     QPushButton *start_button;
+    QPushButton *reset_button;
     QTimer *timer;
+    QWidget *side_bar;
 
     int seconds_remaining;
     bool running;
@@ -44,10 +46,15 @@ private:
     void checkTimeOut();
     void setTimerLabel();
     int minsToSecs(int mins);
-    QWidget* initUi(QPushButton* start, QLabel* timer_label);
+
+    void setupStart();
+    void setupPause();
+
+    QWidget* initUi(QPushButton* start, QLabel* timer_label, QPushButton* reset);
 
 private slots:
     void onTimerTick();
     void onStartPause();
+    void reset();
 };
 #endif // MAINWINDOW_H
