@@ -21,6 +21,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
+    enum Phase { Work, Short_Break, Long_Break };
+
 private:
     Ui::MainWindow *ui;
     QLabel *time_label;
@@ -29,6 +31,20 @@ private:
 
     int seconds_remaining;
     bool running;
+
+    static constexpr int TIME_CONSTANT=60;
+
+    int work_duration;
+    int short_break_duration;
+    int long_break_duration;
+
+    Phase current_phase;
+    int work_phase_counter;
+
+    void checkTimeOut();
+    void setTimerLabel();
+    int minsToSecs(int mins);
+    QWidget* initUi(QPushButton* start, QLabel* timer_label);
 
 private slots:
     void onTimerTick();
