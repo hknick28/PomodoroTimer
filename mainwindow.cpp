@@ -133,6 +133,7 @@ QWidget* MainWindow::initUi(QPushButton* start, QLabel* timer_label, QPushButton
     settings_layout->addWidget(new QLabel("Work Sessions Before Long Break (mins)"));
     settings_layout->addWidget(num_sessions_box);
     settings_layout->addWidget(apply_settings);
+    settings_layout->setAlignment(Qt::AlignTop);
 
     content_area_layout->addWidget(settings_widget);
     content_area_layout->addWidget(central_widget);
