@@ -5,7 +5,8 @@
 #include <QPushbutton>
 #include <QMainWindow>
 #include <QTimer>
-#include <QWidget>
+#include <QStackedWidget>
+#include <QSpinBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,8 +29,18 @@ private:
     QLabel *time_label;
     QPushButton *start_button;
     QPushButton *reset_button;
+    QPushButton *apply_settings;
     QTimer *timer;
-    QWidget *side_bar;
+    QPushButton *side_bar;
+
+    //fields to change settings
+    QWidget *settings_widget;
+    QSpinBox *work_box;
+    QSpinBox *short_break_box;
+    QSpinBox *long_break_box;
+    QSpinBox *num_sessions_box;
+
+
 
     int seconds_remaining;
     bool running;
@@ -42,10 +53,12 @@ private:
 
     Phase current_phase;
     int work_phase_counter;
+    int max_work_phases;
 
     void checkTimeOut();
     void setTimerLabel();
     int minsToSecs(int mins);
+    int secsToMins(int secs);
 
     void setupStart();
     void setupPause();
@@ -56,5 +69,7 @@ private slots:
     void onTimerTick();
     void onStartPause();
     void reset();
+    void onSideTabClicked();
+    void applySettings();
 };
 #endif // MAINWINDOW_H
