@@ -1,12 +1,9 @@
 #include "mainwindow.h"
-//#include "ui_mainwindow.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    /*, ui(new Ui::MainWindow)*/
 {
-   // ui->setupUi(this);
 
     MainWindow::time_label = new QLabel("25:00");
     MainWindow::start_button = new QPushButton("Start");
