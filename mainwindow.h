@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QLabel>
-#include <QPushbutton>
+#include <QPushButton>
 #include <QMainWindow>
 #include <QTimer>
 #include <QStackedWidget>
@@ -62,6 +62,8 @@ private:
 
     void setupStart();
     void setupPause();
+
+    void setColorPalette();
 
     QWidget* initUi(QPushButton* start, QLabel* timer_label, QPushButton* reset);
 

@@ -3,15 +3,13 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-{
-
+{    
     MainWindow::time_label = new QLabel("25:00");
     MainWindow::start_button = new QPushButton("Start");
     MainWindow::reset_button = new QPushButton("Reset");
     MainWindow::side_bar = new QPushButton("☰");
     MainWindow::apply_settings = new QPushButton("Apply");
 
-    MainWindow::seconds_remaining = 25 * TIME_CONSTANT;
     MainWindow::running = false;
     MainWindow::current_phase = Phase::Work;
     MainWindow::work_phase_counter = 0;
@@ -20,9 +18,11 @@ MainWindow::MainWindow(QWidget *parent)
     MainWindow::work_duration=minsToSecs(25);
     MainWindow::short_break_duration=minsToSecs(5);
     MainWindow::long_break_duration=minsToSecs(10);
+    MainWindow::seconds_remaining=work_duration;
 
 
-    MainWindow::settings_widget = new QWidget();
+
+    MainWindow::settings_widget = new QWidget(this);
     MainWindow::work_box = new QSpinBox(this);
     MainWindow::short_break_box = new QSpinBox(this);
     MainWindow::long_break_box = new QSpinBox(this);
@@ -96,7 +96,6 @@ QWidget* MainWindow::initUi(QPushButton* start, QLabel* timer_label, QPushButton
     QWidget *top_panel = new QWidget();
     QWidget *central_widget = new QWidget();
     QWidget *content_area = new QWidget();
-
     QWidget *root_widget = new QWidget();
 
     QVBoxLayout *root_layout = new QVBoxLayout(root_widget);
@@ -104,6 +103,18 @@ QWidget* MainWindow::initUi(QPushButton* start, QLabel* timer_label, QPushButton
     QHBoxLayout *top_layout = new QHBoxLayout(top_panel);
     QVBoxLayout *settings_layout = new QVBoxLayout(settings_widget);
     QHBoxLayout *content_area_layout = new QHBoxLayout(content_area);
+
+    QLabel *work_label = new QLabel("Work Duration (mins)");
+    QLabel *short_break_label = new QLabel("Short Break Duration (mins)");
+    QLabel *long_break_label = new QLabel("Long Break Duration (mins)");
+    QLabel *work_sessions_label = new QLabel("Work Sessions Before Long Break");
+
+    work_label->setStyleSheet("color: #1a1a1a;");
+    short_break_label->setStyleSheet("color: #1a1a1a;");
+    long_break_label->setStyleSheet("color: #1a1a1a;");
+    work_sessions_label->setStyleSheet("color: #1a1a1a;");
+
+
 
     root_layout->setSpacing(0);
     top_layout->setSpacing(0);
@@ -121,13 +132,15 @@ QWidget* MainWindow::initUi(QPushButton* start, QLabel* timer_label, QPushButton
     timer_layout->addWidget(start);
     timer_layout->addWidget(reset);
 
-    settings_layout->addWidget(new QLabel("Work Duration (mins)"));
+
+
+    settings_layout->addWidget(work_label);
     settings_layout->addWidget(work_box);
-    settings_layout->addWidget(new QLabel("Short Break Duration (mins)"));
+    settings_layout->addWidget(short_break_label);
     settings_layout->addWidget(short_break_box);
-    settings_layout->addWidget(new QLabel("Long Break Duration (mins)"));
+    settings_layout->addWidget(long_break_label);
     settings_layout->addWidget(long_break_box);
-    settings_layout->addWidget(new QLabel("Work Sessions Before Long Break (mins)"));
+    settings_layout->addWidget(work_sessions_label);
     settings_layout->addWidget(num_sessions_box);
     settings_layout->addWidget(apply_settings);
     settings_layout->setAlignment(Qt::AlignTop);
@@ -139,7 +152,32 @@ QWidget* MainWindow::initUi(QPushButton* start, QLabel* timer_label, QPushButton
     root_layout->addWidget(content_area);
     root_layout->setContentsMargins(0, 0, 0, 0);
 
+    setColorPalette();
     return root_widget;
+}
+
+/*
+ *
+ * */
+void MainWindow::setColorPalette()
+{
+    this->setStyleSheet("background-color: #f3f5f9;");
+    time_label->setStyleSheet("color: #1a1a1a");
+    start_button->setStyleSheet("background-color: #5a6fa8;"
+                                "border-radius: 6px; padding: 4px 16px;");
+
+    reset_button->setStyleSheet("color: #5a6fa8; border: 2px solid #5a6fa8; "
+                                "border-radius: 6px; padding: 4px 16px;");
+
+    side_bar->setStyleSheet("background-color: #d8dff0; color: #1a1a1a;");
+    apply_settings->setStyleSheet("background-color: #5a6fa8; color: #f3f5f9");
+
+    //boxes
+    settings_widget->setStyleSheet("color: #1a1a1a");
+    work_box->setStyleSheet("color: #1a1a1a");
+    short_break_box->setStyleSheet("color: #1a1a1a");
+    long_break_box->setStyleSheet("color: #1a1a1a");
+    num_sessions_box->setStyleSheet("color: #1a1a1a");
 }
 
 /*
