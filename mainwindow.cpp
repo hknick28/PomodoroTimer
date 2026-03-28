@@ -20,8 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     MainWindow::long_break_duration=minsToSecs(10);
     MainWindow::seconds_remaining=work_duration;
 
-
-
     MainWindow::settings_widget = new QWidget(this);
     MainWindow::work_box = new QSpinBox(this);
     MainWindow::short_break_box = new QSpinBox(this);
@@ -29,6 +27,11 @@ MainWindow::MainWindow(QWidget *parent)
     MainWindow::num_sessions_box = new QSpinBox(this);
 
     MainWindow::timer = new QTimer(this);
+
+    MainWindow::start_working = new QSoundEffect();
+    MainWindow::start_long_break = new QSoundEffect();
+    MainWindow::start_short_break = new QSoundEffect();
+    MainWindow::phase_end_countdown = new QSoundEffect();
 
     work_box->setValue(secsToMins(work_duration));
     short_break_box->setValue(secsToMins(short_break_duration));
@@ -162,17 +165,28 @@ QWidget* MainWindow::initUi(QPushButton* start, QLabel* timer_label, QPushButton
 void MainWindow::setColorPalette()
 {
     this->setStyleSheet("background-color: #f3f5f9;");
+
+    //Buttons
     time_label->setStyleSheet("color: #1a1a1a");
-    start_button->setStyleSheet("background-color: #5a6fa8;"
-                                "border-radius: 6px; padding: 4px 16px;");
+    start_button->setStyleSheet("QPushButton {background-color: #5a6fa8; border: 2px solid #5a6fa8;"
+                                "border-radius: 6px; padding: 4px 16px;}"
+                                "QPushButton:hover {background-color: #4a5d8f;}"
+                                "QPushButton:pressed {background-color: #3a4d7f;}");
 
-    reset_button->setStyleSheet("color: #5a6fa8; border: 2px solid #5a6fa8; "
-                                "border-radius: 6px; padding: 4px 16px;");
+    reset_button->setStyleSheet("QPushButton {color: #5a6fa8; border: 2px solid #5a6fa8; "
+                                "border-radius: 6px; padding: 4px 16px;} "
+                                "QPushButton:hover {background-color: #d8dff0;}"
+                                "QPushButton:pressed {background-color: #c0cbdf;}");
 
-    side_bar->setStyleSheet("background-color: #d8dff0; color: #1a1a1a;");
-    apply_settings->setStyleSheet("background-color: #5a6fa8; color: #f3f5f9");
+    side_bar->setStyleSheet("QPushButton {background-color: #d8dff0; color: #1a1a1a;}"
+                            "QPushButton:hover {background-color: #c0cbdf}"
+                            "QPushButoon:pressed {bacground-color: #a8b8d0}");
 
-    //boxes
+    apply_settings->setStyleSheet("QPushButton {background-color: #5a6fa8; color: #f3f5f9}"
+                                  "QPushButton:hover {background-color: #4a5d8f;}"
+                                  "QPushButton:pressed {background-color: #3a4d7f;}");
+
+    //Boxes
     settings_widget->setStyleSheet("color: #1a1a1a");
     work_box->setStyleSheet("color: #1a1a1a");
     short_break_box->setStyleSheet("color: #1a1a1a");

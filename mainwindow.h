@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QStackedWidget>
 #include <QSpinBox>
+#include <QSoundEffect>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -40,8 +41,6 @@ private:
     QSpinBox *long_break_box;
     QSpinBox *num_sessions_box;
 
-
-
     int seconds_remaining;
     bool running;
 
@@ -54,6 +53,11 @@ private:
     Phase current_phase;
     int work_phase_counter;
     int max_work_phases;
+
+    QSoundEffect *phase_end_countdown;
+    QSoundEffect *start_working;
+    QSoundEffect *start_short_break;
+    QSoundEffect *start_long_break;
 
     void checkTimeOut();
     void setTimerLabel();
