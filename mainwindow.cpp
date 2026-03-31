@@ -33,6 +33,13 @@ MainWindow::MainWindow(QWidget *parent)
     MainWindow::start_short_break = new QSoundEffect();
     MainWindow::phase_end_countdown = new QSoundEffect();
 
+    start_working->setSource(QUrl::fromLocalFile("C:/Users/hrida/OneDrive/Desktop/C++_projects/PomodoroTimer/Work.wav"));
+    start_long_break->setSource(QUrl::fromLocalFile("C:/Users/hrida/OneDrive/Desktop/C++_projects/PomodoroTimer/Long_Break.wav"));
+    start_short_break->setSource(QUrl::fromLocalFile("C:/Users/hrida/OneDrive/Desktop/C++_projects/PomodoroTimer/Short_Break.wav"));
+    phase_end_countdown->setSource(QUrl::fromLocalFile("C:/Users/hrida/OneDrive/Desktop/C++_projects/PomodoroTimer/Countdown.wav"));
+    qDebug() << phase_end_countdown->status();
+
+
     work_box->setValue(secsToMins(work_duration));
     short_break_box->setValue(secsToMins(short_break_duration));
     long_break_box->setValue(secsToMins(long_break_duration));
@@ -180,7 +187,7 @@ void MainWindow::setColorPalette()
 
     side_bar->setStyleSheet("QPushButton {background-color: #d8dff0; color: #1a1a1a;}"
                             "QPushButton:hover {background-color: #c0cbdf}"
-                            "QPushButoon:pressed {bacground-color: #a8b8d0}");
+                            "QPushButton:pressed {background-color: #a8b8d0}");
 
     apply_settings->setStyleSheet("QPushButton {background-color: #5a6fa8; color: #f3f5f9}"
                                   "QPushButton:hover {background-color: #4a5d8f;}"
@@ -201,6 +208,12 @@ void MainWindow::setColorPalette()
  * */
 void MainWindow::checkTimeOut()
 {
+    //Pre-condition
+    if(seconds_remaining > 0 && seconds_remaining <= 3)
+    {
+        phase_end_countdown->play();
+    }
+    // early exit
     if(seconds_remaining > 0){ return; }
 
     switch(current_phase)
@@ -213,12 +226,14 @@ void MainWindow::checkTimeOut()
             setTimerLabel();
             work_phase_counter=0;
             current_phase = Phase::Long_Break;
+            start_long_break->play();
         }
         else
         {
             seconds_remaining = short_break_duration;
             setTimerLabel();
             current_phase = Phase::Short_Break;
+            start_short_break->play();
         }
 
         break;
@@ -227,12 +242,14 @@ void MainWindow::checkTimeOut()
         seconds_remaining = work_duration;
         setTimerLabel();
         current_phase = Phase::Work;
+        start_working->play();
         break;
 
     case Phase::Long_Break:
         seconds_remaining = work_duration;
         setTimerLabel();
         current_phase = Phase::Work;
+        start_working->play();
         break;
 
     }
@@ -284,6 +301,10 @@ void MainWindow::reset()
     work_phase_counter = 0;
     setupStart();
     setTimerLabel();
+    start_working->stop();
+    start_long_break->stop();
+    start_short_break->stop();
+    phase_end_countdown->stop();
 }
 
 /*

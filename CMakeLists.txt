@@ -11,6 +11,7 @@ qt_add_executable(PomodoroTimer
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    resources.qrc
 )
 
 target_link_libraries(PomodoroTimer
