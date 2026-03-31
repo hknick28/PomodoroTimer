@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/sounds">
+        <file>Countdown.wav</file>
+        <file>Short_Break.wav</file>
+        <file>Long_Break.wav</file>
+        <file>Work.wav</file>
+    </qresource>
+</RCC>
